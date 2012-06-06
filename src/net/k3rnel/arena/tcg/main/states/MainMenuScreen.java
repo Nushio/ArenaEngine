@@ -1,12 +1,15 @@
 package net.k3rnel.arena.tcg.main.states;
 
-import net.k3rnel.arena.tcg.main.GameClient;
-
+import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -22,26 +25,23 @@ public class MainMenuScreen extends BasicGameState {
 
     // A Unique ID so that the GameClient knows which state we're in. 
     int stateID = 0; //Tip: It's not Oregon. It's never Oregon. 
-    
+
     Image background = null;
-    
-    //The Shiny Menu Options
+
+    // The Shiny Menu Options
     Image newGameOption = null;
     Image continueOption = null;
     Image optionsOption = null;
     Image quitOption = null;
 
-    // The Menu Option Size
-    float newGameScale = 1;
-    float continueScale = 1;
-    float optionsScale = 1;
-    float quitScale = 1;
-
+    // The Click Wizard!
+    Animation wizard = null;
+    Image speech = null;
+    
     // Where we place the Menus
     private static int menuX = 410;
     private static int menuY = 230;
 
-    float scaleStep = 0.0001f; // Sets the speed of the Zoom In Animation
     /**
      * Initializes the StateID
      * @param stateID
@@ -58,7 +58,7 @@ public class MainMenuScreen extends BasicGameState {
     public int getID() {
         return stateID;
     }
-
+    boolean clicked = false;
     /**
      * Initializes the Main Menu
      * This is where we set up the background, as well as the menu options. 
@@ -81,6 +81,16 @@ public class MainMenuScreen extends BasicGameState {
 
         // Quit Option        
         quitOption = menuOptions.getSubImage(0, 186, 377, 58);
+
+        wizard = new Animation();
+        wizard.setAutoUpdate(true);
+        SpriteSheet wizardSheet = new SpriteSheet("res/images/wizard.png", 86,76);
+        for (int frame=0;frame<4;frame++) {
+            wizard.addFrame(wizardSheet.getSprite(frame,0), 86);
+        }
+        
+        speech = new Image("res/images/speech.png");
+
     }
 
     /**
@@ -92,103 +102,31 @@ public class MainMenuScreen extends BasicGameState {
         background.draw(0, 0);
 
         // Display menu
-        newGameOption.draw(menuX, menuY, newGameScale);
+        newGameOption.draw(menuX, menuY);
 
-        continueOption.draw(menuX, menuY+80, continueScale);
+        continueOption.draw(menuX, menuY+80);
 
-        optionsOption.draw(menuX, menuY+160, optionsScale);
-        
-        quitOption.draw(menuX, menuY+225, quitScale);
+        optionsOption.draw(menuX, menuY+160);
+
+        quitOption.draw(menuX, menuY+225);
+
+        if(clicked){
+            wizard.draw(100, 400);
+            wizard.setSpeed((float) 0.5);
+            speech.draw(120,320);
+            gx.setAntiAlias(true);
+            gx.setFont(new TrueTypeFont(new java.awt.Font("res/fonts/MedievalSharp.ttf",0,24), true));
+            gx.setColor(new Color(0,0,0));
+            gx.drawString("YOU SHALL NOT CLICK!",150,345);
+        }
     }
 
-    /**
-     * Changes the stuff that is happening on-screen. 
-     * In this case, it checks where your mouse is located and makes the image 
-     * you mouse-overed Zoom In or Out. I dunno if its patented by Apple, but Byte me. 
-     */
     public void update(GameContainer gc, StateBasedGame sb, int delta) throws SlickException {
         Input input = gc.getInput();
 
-        int mouseX = input.getMouseX();
-        int mouseY = input.getMouseY();
-
-        boolean insideNewGame = false;
-        boolean insideContinue = false;
-        boolean insideOptions = false;
-        boolean insideQuit = false;
-
-        if( ( mouseX >= menuX && mouseX <= menuX + newGameOption.getWidth()) &&
-                ( mouseY >= menuY && mouseY <= menuY + newGameOption.getHeight()) ){
-            insideNewGame = true;
-            insideContinue = false;
-            insideOptions = false;
-            insideQuit = false;
-        }else if( ( mouseX >= menuX && mouseX <= menuX+ continueOption.getWidth()) &&
-                ( mouseY >= menuY+80 && mouseY <= menuY+80 + continueOption.getHeight()) 
-               ){
-            insideNewGame = false;
-            insideContinue = true;
-            insideOptions = false;
-            insideQuit = false;
-        } else if( ( mouseX >= menuX && mouseX <= menuX+ optionsOption.getWidth()) &&
-                ( mouseY >= menuY+160 && mouseY <= menuY+160 + optionsOption.getHeight())){
-            insideNewGame = false;
-            insideContinue = false;
-            insideOptions = true;
-            insideQuit = false;
-        } else if( ( mouseX >= menuX && mouseX <= menuX+ quitOption.getWidth()) &&
-                ( mouseY >= menuY+220 && mouseY <= menuY+220 + quitOption.getHeight())){
-            insideNewGame = false;
-            insideContinue = false;
-            insideOptions = false;
-            insideQuit = true;
-        }else{
-            insideNewGame = false;
-            insideContinue = false;
-            insideOptions = false;
-            insideQuit = false;
-            
-        }
-
-        if(insideNewGame){
-            if(newGameScale < 1.05f)
-                newGameScale += scaleStep * delta;
-
-            if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-                sb.enterState(GameClient.CHARSELECTSTATE);
-            }
-        }else{
-            if(newGameScale > 1.0f)
-                newGameScale -= scaleStep * delta;
-
-            if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
-                gc.exit();
-        } 
-
-        if(insideContinue)
-        {
-            if(continueScale < 1.05f)
-                continueScale +=  scaleStep * delta;
-        }else{
-            if(continueScale > 1.0f)
-                continueScale -= scaleStep * delta;
-        }
-        
-        if(insideOptions)
-        {
-            if(optionsScale < 1.05f)
-                optionsScale +=  scaleStep * delta;
-        }else{
-            if(optionsScale > 1.0f)
-                optionsScale -= scaleStep * delta;
-        }
-        if(insideQuit)
-        {
-            if(quitScale < 1.05f)
-                quitScale +=  scaleStep * delta;
-        }else{
-            if(quitScale > 1.0f)
-                quitScale -= scaleStep * delta;
+        if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+            System.out.println("You're clicking!");
+            clicked = true;
         }
     }
 }
