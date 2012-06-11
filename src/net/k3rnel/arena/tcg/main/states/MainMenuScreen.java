@@ -1,5 +1,7 @@
 package net.k3rnel.arena.tcg.main.states;
 
+import net.k3rnel.arena.tcg.main.GameClient;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -21,7 +23,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class MainMenuScreen extends BasicGameState {
 
     // A Unique ID so that the GameClient knows which state we're in. 
-    int stateID = 0; //Tip: It's not Oregon. It's never Oregon. 
+    int stateID = 0; //Tip: It's not Machupichu. It's never Machupichu. 
 
     Image background = null;
 
@@ -40,7 +42,10 @@ public class MainMenuScreen extends BasicGameState {
     // Where we place the Menus
     private static int menuX = 410;
     private static int menuY = 230;
-
+    
+    boolean clicked = false;
+    int frame = 0;
+    int option = 0;
     /**
      * Initializes the StateID
      * @param stateID
@@ -57,9 +62,7 @@ public class MainMenuScreen extends BasicGameState {
     public int getID() {
         return stateID;
     }
-    boolean clicked = false;
-    int frame = 0;
-    int option = 0;
+
     /**
      * Initializes the Main Menu
      * This is where we set up the background, as well as the menu options. 
@@ -122,10 +125,19 @@ public class MainMenuScreen extends BasicGameState {
         staff.draw(menuX-80,menuY+25+option);
         if(clicked){
             fireball.draw(menuX+5+frame,menuY+22+option);
-            frame= frame+20;
+            frame= frame+40;
             if(frame > 260){
                 clicked = false;
                 frame = 0;
+                System.out.println(option);
+                if(option == 0){
+                    sbg.enterState(GameClient.PLAYSTATE);
+                }else if(option == 120){
+                    sbg.enterState(GameClient.OPTIONSSTATE);
+                }else if(option == 160){
+                   gc.exit();
+                }
+                    
             }
 //            wizard.draw(100, 400);
 //            wizard.setSpeed((float) 0.5);
@@ -140,8 +152,50 @@ public class MainMenuScreen extends BasicGameState {
     public void update(GameContainer gc, StateBasedGame sb, int delta) throws SlickException {
         Input input = gc.getInput();
 
+        if(input.isButtonPressed(0, 0)){
+            System.out.println("You pressed 0");
+        }else if(input.isButtonPressed(1, 0)){
+            System.out.println("You pressed 1");
+        }else if(input.isButtonPressed(2, 0)){
+            System.out.println("You pressed 2");
+        }else if(input.isButtonPressed(3, 0)){
+            System.out.println("You pressed 3");
+        }else if(input.isButtonPressed(4, 0)){
+            System.out.println("You pressed 4");
+        }else if(input.isButtonPressed(5, 0)){
+            System.out.println("You pressed 5");
+        }else if(input.isButtonPressed(6, 0)){
+            System.out.println("You pressed 6");
+        }else if(input.isButtonPressed(7, 0)){
+            System.out.println("You pressed 7");
+        }else if(input.isButtonPressed(8, 0)){
+            System.out.println("You pressed 8");
+        }else if(input.isButtonPressed(9, 0)){
+            System.out.println("You pressed 9");
+        }
         if ( input.isKeyPressed(Input.KEY_SPACE) ){
-            System.out.println("You're spacing!");
+            clicked = true;
+        }
+        if(input.isControllerUp(0)){
+            if(option==0)
+                option = 180;
+            else
+                option = option - 60;
+            
+        }
+        if(input.isControllerDown(0)){
+            option=option+60;
+            if(option >= 240)
+                option = 0;
+            
+        }
+        if(input.isButton1Pressed(0)){
+            clicked = true;
+        }
+        if(input.isButton2Pressed(0)){
+            clicked = true;
+        }  
+        if(input.isButton3Pressed(0)){
             clicked = true;
         }
         if (input.isKeyPressed(Input.KEY_DOWN)){

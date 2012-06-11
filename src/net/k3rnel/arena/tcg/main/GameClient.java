@@ -20,6 +20,8 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import net.k3rnel.arena.tcg.main.states.MainMenuScreen;
+import net.k3rnel.arena.tcg.main.states.OptionsScreen;
+import net.k3rnel.arena.tcg.main.states.PlayScreen;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -36,13 +38,14 @@ public class GameClient extends StateBasedGame {
 
     public static final int MAINMENUSTATE           = 0;
     public static final int OPTIONSSTATE            = 1;
-    public static final int CHARSELECTSTATE         = 2;
-    public static final int WALKONMAPSTATE          = 3;
+    public static final int PLAYSTATE               = 2;
 
     public GameClient(String title) {
         super(title);
 
         this.addState(new MainMenuScreen(MAINMENUSTATE));
+        this.addState(new OptionsScreen(OPTIONSSTATE));
+        this.addState(new PlayScreen(PLAYSTATE));
         this.enterState(MAINMENUSTATE);
     }
 
@@ -84,7 +87,7 @@ public class GameClient extends StateBasedGame {
         //            e.printStackTrace();
         //        }
         try {
-            AppGameContainer app = new AppGameContainer(new GameClient("Arena TCG"));
+            AppGameContainer app = new AppGameContainer(new GameClient("Birthday Suit Bob"));
 
             app.setDisplayMode(800, 600, false);
             app.start();
