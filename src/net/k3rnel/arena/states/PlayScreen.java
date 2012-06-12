@@ -232,13 +232,6 @@ public class PlayScreen extends BasicGameState {
                 }else{
                     System.out.println(tmppx+"/"+tmppy);
                 }
-//                if((blocked == 4) && (tmpx-(int)tmpx)<0.3){
-//                    x -= 10 * 0.1f;
-//                    camerax += delta * 0.1f;
-//                }else if(blocked!=4){
-//                    x -= 10 * 0.1f;
-//                    camerax += delta * 0.1f;
-//                }
                 
             }
         }
@@ -323,29 +316,6 @@ public class PlayScreen extends BasicGameState {
             player.update(delta);
         }
     }
-    
-//    private boolean wallcheck(float x, float y){
-//        int i = Math.round(x);
-//        int k = Math.round(y);
-//        
-//        i = i / 32;
-//        k = k / 32;
-//        tmppx = i;
-//        tmppy = k;
-//        return get_wall(i, k) ||  get_wall(i, k-1);
-//    }
-//    
-//    private boolean get_wall(int i, int k){
-//        boolean block = false;
-//        int type = blocked[i][k];
-//        System.out.println("Type: "+type);
-//        switch(type){
-//            case 0:
-//                block = true;
-//                break;
-//        }
-//        return block;
-//    }
     
     private int isBlocked(float x, float y)
     {
