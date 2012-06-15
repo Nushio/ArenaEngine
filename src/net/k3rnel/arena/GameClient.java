@@ -19,9 +19,9 @@ package net.k3rnel.arena;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import net.k3rnel.arena.states.MainMenuScreen;
-import net.k3rnel.arena.states.OptionsScreen;
-import net.k3rnel.arena.states.PlayScreen;
+import net.k3rnel.arena.states.GamePlay;
+import net.k3rnel.arena.states.MainMenu;
+import net.k3rnel.arena.states.Options;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -36,22 +36,22 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class GameClient extends StateBasedGame {
 
-    public static final int MAINMENUSTATE           = 0;
-    public static final int OPTIONSSTATE            = 1;
-    public static final int PLAYSTATE               = 2;
+    public static final int MAINMENU           = 0;
+    public static final int OPTIONS            = 1;
+    public static final int GAMEPLAY           = 2;
 
     public GameClient(String title) {
         super(title);
 
-        this.addState(new MainMenuScreen(MAINMENUSTATE));
-        this.addState(new OptionsScreen(OPTIONSSTATE));
-        this.addState(new PlayScreen(PLAYSTATE));
-        this.enterState(MAINMENUSTATE);
+        this.addState(new MainMenu(MAINMENU));
+        this.addState(new Options(OPTIONS));
+        this.addState(new GamePlay(GAMEPLAY));
+        this.enterState(MAINMENU);
     }
 
     @Override
     public void initStatesList(GameContainer gc) throws SlickException {
-        this.getState(MAINMENUSTATE).init(gc, this);
+        this.getState(MAINMENU).init(gc, this);
 
     }
 
@@ -60,32 +60,6 @@ public class GameClient extends StateBasedGame {
      * @param args
      */
     public static void main(String [] args) {
-        // Start in Fullscreen? Default no. 
-        //        final boolean fullscreen = false;
-        //        try {
-        //            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        //            double screenRatio = 0.0;
-        //            if(screenSize!=null && screenSize.getWidth()>0 && screenSize.getHeight()>0)
-        //                screenRatio = screenSize.getWidth() / screenSize.getHeight();
-        //            int width, height;
-        //            if(screenRatio < 0.6){
-        //                //Start Widescreen
-        //               width = 1024;
-        //               height = 600;
-        //            } else{
-        //                //Start Fullscreen
-        //                width = 768;
-        //                height = 1024;
-        //            }
-        //            
-        //            m_gamecontainer = new AppGameContainer(new GameClient("Arena TCG"),
-        //                  width,height, fullscreen);
-        //            m_gamecontainer.setTargetFrameRate(50);
-        //            m_gamecontainer.start();
-        //        } catch (Exception e) {
-        //            JOptionPane.showMessageDialog(new JDialog(), "Whoops!\nThere was a terrible error and we can't launch the game.\nOur sincerest apologies.");            
-        //            e.printStackTrace();
-        //        }
         try {
             AppGameContainer app = new AppGameContainer(new GameClient("Birthday Suit Bob"));
 
