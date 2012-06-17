@@ -9,10 +9,10 @@ public class Scene {
     private TiledMapPlus activeMap;
     private float camera_x;
     private float camera_y;
-    private int[][] blocked;
+    private boolean[][] blocked;
     private ArrayList<Integer> above;
     private ArrayList<Integer> below;
-    private static int SIZE = 32;
+    private static int SIZE = 16;
     
     public Scene(TiledMapPlus tiledMap) {
         setActiveMap(tiledMap);
@@ -29,14 +29,15 @@ public class Scene {
      */
     public void setActiveMap(TiledMapPlus tiledMap) {
         this.activeMap = tiledMap;
-        this.blocked = new int[activeMap.getWidth()][activeMap.getHeight()];
-        for (int xAxis=0;xAxis<activeMap.getWidth(); xAxis++)
-        {
-            for (int yAxis=0;yAxis<activeMap.getHeight(); yAxis++)
-            {
-              blocked[xAxis][yAxis] = -1;  
-            }
-        }
+        //Twice the size for twice the flavor. Now using Subtiles!
+        this.blocked = new boolean[activeMap.getWidth()*2][activeMap.getHeight()*2];
+//        for (int xAxis=0;xAxis<activeMap.getWidth()*2; xAxis++)
+//        {
+//            for (int yAxis=0;yAxis<activeMap.getHeight()*2; yAxis++)
+//            {
+//              blocked[xAxis][yAxis] = -1;  
+//            }
+//        }
 
         for (int xAxis=0;xAxis<activeMap.getWidth(); xAxis++)
         {
@@ -44,25 +45,33 @@ public class Scene {
             {
                 for(int i = 0; i<activeMap.getLayerCount();i++){
                     int tileID = activeMap.getTileId(xAxis, yAxis, i);
-                    String value = activeMap.getTileProperty(tileID, "wall", "fake");
+                    String value = activeMap.getTileProperty(tileID, "wall", "-1");
                     if ("a".equals(value)){
-                        blocked[xAxis][yAxis] = 0;
-                    }else if ("n".equals(value)){
-                        blocked[xAxis][yAxis] = 1;
+                        blocked[xAxis*2][yAxis*2] = true;
+                        blocked[(xAxis*2) + 1][yAxis*2] = true;
+                        blocked[xAxis*2][(yAxis*2) + 1] = true;
+                        blocked[(xAxis*2) + 1][yAxis*2 + 1] = true;
+                    }
+                    else if ("n".equals(value)){
+                        blocked[xAxis*2][yAxis*2] = true;
+                        blocked[(xAxis*2)+1][(yAxis*2)] = true;
                     }else if ("s".equals(value)){
-                        blocked[xAxis][yAxis] = 2;
+                        blocked[xAxis*2][(yAxis*2)+1] = true;
+                        blocked[xAxis*2+1][(yAxis*2) + 1] = true;
                     }else if ("e".equals(value)){
-                        blocked[xAxis][yAxis] = 3;
+                        blocked[(xAxis*2)][(yAxis*2) + 1] = true;
+                        blocked[(xAxis*2) + 1][(yAxis*2) + 1] = true;
                     }else if ("w".equals(value)){
-                        blocked[xAxis][yAxis] = 4;
+                        blocked[(xAxis*2)][(yAxis*2)] = true;
+                        blocked[(xAxis*2)][(yAxis*2) + 1] = true;
                     }else if ("nw".equals(value)){
-                        blocked[xAxis][yAxis] = 5;
+                        blocked[(xAxis*2)][(yAxis*2)] = true;
                     }else if ("ne".equals(value)){
-                        blocked[xAxis][yAxis] = 6;
+                        blocked[(xAxis*2)+1][(yAxis*2)] = true;
                     }else if ("sw".equals(value)){
-                        blocked[xAxis][yAxis] = 7;
+                        blocked[(xAxis*2)+1][(yAxis*2)] = true;
                     }else if ("se".equals(value)){
-                        blocked[xAxis][yAxis] = 8;
+                        blocked[(xAxis*2)+1][(yAxis*2)+1] = true;
                     }
                 }
             }
@@ -85,17 +94,17 @@ public class Scene {
      * @param y
      * @return
      */
-    private int isBlocked(float x, float y) {
-        int xBlock = (int)x / SIZE;
-        int yBlock = (int)y / SIZE;
-        int block = -1;
+    public boolean isBlocked(int x, int y) {
+        boolean block = false;
+        System.out.println(x+"/"+y);
         try{
-            block = blocked[xBlock][yBlock];
+            block = blocked[x][y];
         }catch(Exception e){
-            block = -1;
+            block = false;
         }
-        if(xBlock<=0||yBlock<=0||xBlock>=64||yBlock>=64)
-            block=0;
+        if(x<=-1||y<=-1||x>=128||y>=128)
+            block=true;
+        System.out.println(block);
         return block;
     }
     
@@ -125,18 +134,6 @@ public class Scene {
         this.camera_y = camera_y;
     }
     /**
-     * @return the blocked
-     */
-    public int[][] getBlocked() {
-        return blocked;
-    }
-    /**
-     * @param blocked the blocked to set
-     */
-    public void setBlocked(int[][] blocked) {
-        this.blocked = blocked;
-    }
-    /**
      * @return the above
      */
     public ArrayList<Integer> getAbove() {
@@ -161,16 +158,10 @@ public class Scene {
         this.below = below;
     }
     /**
-     * @return the sIZE
+     * @return the SIZE
      */
     public static int getSIZE() {
         return SIZE;
-    }
-    /**
-     * @param sIZE the sIZE to set
-     */
-    public static void setSIZE(int sIZE) {
-        SIZE = sIZE;
     }
 
 }

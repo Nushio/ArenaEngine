@@ -140,7 +140,39 @@
   </tile>
  </tileset>
  <tileset firstgid="239" source="house.tsx"/>
- <tileset firstgid="360" source="chests.tsx"/>
+ <tileset firstgid="360" name="chests" tilewidth="32" tileheight="32">
+  <image source="chests.png" width="64" height="96"/>
+  <tile id="0">
+   <properties>
+    <property name="wall" value="a"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="wall" value="a"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="wall" value="a"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="wall" value="a"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="wall" value="a"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="wall" value="a"/>
+   </properties>
+  </tile>
+ </tileset>
  <tileset firstgid="366" name="barrel" tilewidth="32" tileheight="32">
   <image source="barrel.png" width="128" height="64"/>
   <tile id="0">
@@ -210,7 +242,7 @@
  </layer>
  <layer name="rocks_etc" width="64" height="64">
   <data encoding="base64" compression="zlib">
-   eJzt1UkOgzAQBEB4eJ4Mb8jJUoiIIxBep+oYDrhn2mFZAAAAAAAAAOp7ra1PwCy21gdoaG99gMpS3u+dz96BaHtOPnNvmd+i049x3enwqLlL3dfI/wOjduFJUWcQufdJr7vv9Vwl1cwccb6jsJtYZv4O5bLNnPuqme781Sy5HtSey6/3PdXVf3la9cBdPM4+t4ezZ2fz63XXOXpwVGKHZgwAfXgD5tsrMQ==
+   eJzt1csNwjAQBcDQLU1QcqiBkyWCglGQ/ztzJIf47T6TbQMAAAAAAGAU91vvE0A7D32nkL33ATp69j5AYynv585X70C0PSfvuffMb9Hpx7z+6fCsuWvd18j/A7N2oaSoM4jc+2TU3Y96rppaZo4431nYTSwrf4dy2VbOfdVKd/5qllwPWs/l2/tKdfVXnl49cBePs8/t4ezZ2fxG3XWOHhzV2KEZA8AYXpmuK5o=
   </data>
  </layer>
  <layer name="trunks_a" width="64" height="64">
@@ -258,7 +290,7 @@
  </layer>
  <layer name="trees_low_b" width="64" height="64">
   <data encoding="base64" compression="zlib">
-   eJzt1+sOgyAMhmGufd6448cSs8gA149W+z7JYuIc9CDotlLK6/3ZBMcRqrmjHck9Z+7U4Dfv2DxyjlKDEqgGq2rhPZ9FDb6va/2udd1RtLXQymV0rF4Neucj1MCyjj0WOa3cC6+aXf+j34/GPRO/V///pbwPVKznufP6t5K5/61x1XlcpYhRuRdaO4vNejyrtaCgeMbOvoN5Ut/70a3Y+yKj/7r+t85Hqs3qmCLlXin+a91J5tyrjDkfZe37R+bcq96z6uky5AgAAAAAAAAAAAAAAPBkOzXhdLo=
+   eJzt12EKwjAMhuF6XK/hDqEg6hS8p90PYYi1nTb9Mvs+EAZztkm6bjqEEHYxBoNjCau5vR2pvc/a6cFn6twUNXvpQXDUg1a9UM9Xowev16W+l7puztteSNVSOlauB7nzHnpQs485NWpq+Sz81tL9X/p5ad5L8let/68s7wMrtedZ8/6vpef1T41rXce3LHK0fBbW9i632uPV2gsWLN6xS3+DKVnf+961ePZ5xvrbrX/qvKfetM7JU+0Ti/9aa9Jz7ZMea57zsO7bjWjioK1dWfdT7l3ViqoXve57AAAAAACA1vbqBCDX8z1winGOcVEnIjLGuMa4ifNQGWMcYtzFeaiMMY7qJAAAAPD3Hi8hffs=
   </data>
  </layer>
  <layer name="trees_mid_b" width="64" height="64">

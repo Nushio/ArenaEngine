@@ -61,7 +61,7 @@ public class GameClient extends StateBasedGame {
      */
     public static void main(String [] args) {
         try {
-            AppGameContainer app = new AppGameContainer(new GameClient("Birthday Suit Bob"));
+            AppGameContainer app = new AppGameContainer(new GameClient("Unsealed: Whispers of Wisdom"));
 
             app.setDisplayMode(800, 600, false);
             app.start();

@@ -19,10 +19,10 @@ public class OurPlayer {
     
     private Type type;
     private SpriteSheet spriteSheet;
-    private float pos_x;
-    private float pos_y;
-    private int tile_x;
-    private int tile_y;
+    private static int offset_x = -16;
+    private static int offset_y = -32;
+    private float tile_x;
+    private float tile_y;
     private Animation sprite;
     private HashMap<Direction,Animation> animations = new HashMap<Direction,Animation>();
     private Direction direction;
@@ -154,51 +154,43 @@ public class OurPlayer {
         this.animations = animations;
     }
     /**
-     * @return the pos_x
-     */
-    public float getPos_x() {
-        return pos_x;
-    }
-    /**
-     * @param pos_x the pos_x to set
-     */
-    public void setPos_x(float pos_x) {
-        this.pos_x = pos_x;
-    }
-    /**
-     * @return the pos_y
-     */
-    public float getPos_y() {
-        return pos_y;
-    }
-    /**
-     * @param pos_y the pos_y to set
-     */
-    public void setPos_y(float pos_y) {
-        this.pos_y = pos_y;
-    }
-    /**
      * @return the tile_x
      */
-    public int getTile_x() {
+    public float getTile_x() {
         return tile_x;
     }
     /**
      * @param tile_x the tile_x to set
      */
-    public void setTile_x(int tile_x) {
+    public void setTile_x(float tile_x) {
         this.tile_x = tile_x;
     }
     /**
      * @return the tile_y
      */
-    public int getTile_y() {
+    public float getTile_y() {
         return tile_y;
     }
     /**
      * @param tile_y the tile_y to set
      */
-    public void setTile_y(int tile_y) {
+    public void setTile_y(float tile_y) {
         this.tile_y = tile_y;
     }
+
+    /**
+     * @return the offset_x
+     */
+    public int getOffset_x() {
+        return offset_x;
+    }
+
+
+    /**
+     * @return the offset_y
+     */
+    public int getOffset_y() {
+        return offset_y;
+    }
+
 }

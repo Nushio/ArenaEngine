@@ -28,8 +28,8 @@ public class GamePlay extends BasicGameState{
     int stateID = 2; //Tip: It's not Guadalajara. It's never Guadalajara.
     private OurPlayer player;
     private Scene scene;
-    int tmp1, tmp2, tmp3, tmp4;
-    
+    float tmp1, tmp2, tmp3, tmp4;
+
     /**
      * Initializes the StateID
      * @param stateID
@@ -45,9 +45,11 @@ public class GamePlay extends BasicGameState{
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         scene = new Scene(new TiledMapPlus("res/maps/beach.tmx"));
-        player = new OurPlayer(new SpriteSheet("res/sprites/male_walkcycle.png",64,64,0));
-        player.setPos_x(370);
-        player.setPos_y(250);
+        scene.setCamera_x(-966);
+        scene.setCamera_y(-640);
+        player = new OurPlayer(new SpriteSheet("res/sprites/soldier.png",64,64,0));
+        player.setTile_x(86f);
+        player.setTile_y(56f);
     }
 
 
@@ -57,24 +59,25 @@ public class GamePlay extends BasicGameState{
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics gfx)
             throws SlickException {
+        gfx.setWorldClip(0,0 , 864, 664);
         TiledMapPlus activeMap = scene.getActiveMap();
+
         for(int i = 0; i< scene.getBelow().size(); i++){
             activeMap.render((int)scene.getCamera_x(),(int)scene.getCamera_y(), scene.getBelow().get(i));
         }
-        if(player.getDirection().equals(Direction.RIGHT))
-            tmp1 = ((((int)player.getPos_x()+42)+(int)scene.getCamera_x()*-1) / Scene.getSIZE());
-        if(player.getDirection().equals(Direction.LEFT))
-            tmp1 = ((((int)player.getPos_x()+20)+(int)scene.getCamera_x()*-1) / Scene.getSIZE());
-        if(player.getDirection().equals(Direction.DOWN))
-            tmp2 = ((((int)player.getPos_y()+30)+(int)scene.getCamera_y()*-1) / Scene.getSIZE());
-        if(player.getDirection().equals(Direction.UP))
-        tmp2 = ((((int)player.getPos_y()+32)+(int)scene.getCamera_y()*-1) / Scene.getSIZE());
-        player.getSprite().draw((int)player.getPos_x(), (int)player.getPos_y());
+        tmp1 =(int)((int)(scene.getCamera_x()*-1));
+        tmp2 =(int)((int)(scene.getCamera_y()*-1));
+
+//                player.setTile_x(86);
+//                player.setTile_y(60);
+
+        player.getSprite().draw(player.getTile_x()*16+(int)scene.getCamera_x()+player.getOffset_x(),player.getTile_y()*16+(int)scene.getCamera_y()+player.getOffset_y());
         
         for(int i = 0; i< scene.getAbove().size(); i++){
             activeMap.render((int)scene.getCamera_x(),(int)scene.getCamera_y(), scene.getAbove().get(i));
         }
-        gfx.drawString("POS: "+tmp1+"/"+tmp2, 550, 550);
+        gfx.drawString("POS: "+player.getTile_x()+"/"+player.getTile_y(), 580, 550);
+        gfx.drawString("Debug: "+tmp3, 580, 580);
     }
 
     @Override
@@ -83,23 +86,40 @@ public class GamePlay extends BasicGameState{
         if (input.isKeyDown(Input.KEY_UP)||input.isKeyDown(Input.KEY_W)){
             player.setDirection(Direction.UP);
             player.getSprite().update(delta);
-            player.setTile_y(player.getTile_y()-1);
-            scene.setCamera_y(scene.getCamera_y()+32*0.1f);
-        } else if(input.isKeyDown(Input.KEY_DOWN)||input.isKeyDown(Input.KEY_S)){
+            if(!scene.isBlocked((int)(player.getTile_x()+1), (int)(player.getTile_y()+1))){
+                player.setTile_y(player.getTile_y()-0.2f);
+                scene.setCamera_y(scene.getCamera_y()+32*0.1f);
+            }
+        }
+        else if(input.isKeyDown(Input.KEY_DOWN)||input.isKeyDown(Input.KEY_S)){
             player.setDirection(Direction.DOWN);
             player.getSprite().update(delta);
-            player.setTile_y(player.getTile_y()+1);
-            scene.setCamera_y(scene.getCamera_y()-32*0.1f);
-        } else if(input.isKeyDown(Input.KEY_LEFT)||input.isKeyDown(Input.KEY_A)){
+            if(!scene.isBlocked((int)(player.getTile_x()+1), (int)(player.getTile_y()+2.1))){
+                player.setTile_y(player.getTile_y()+0.2f);
+                scene.setCamera_y(scene.getCamera_y()-32*0.1f);
+            }
+        }
+        else if(input.isKeyDown(Input.KEY_LEFT)||input.isKeyDown(Input.KEY_A)){
             player.setDirection(Direction.LEFT);
             player.getSprite().update(delta);
-            player.setTile_x(player.getTile_x()-1);
-            scene.setCamera_x(scene.getCamera_x()+32*0.1f);
-        } else if(input.isKeyDown(Input.KEY_RIGHT)||input.isKeyDown(Input.KEY_D)){
+            if(!scene.isBlocked((int)(player.getTile_x()+0.1), (int)(player.getTile_y()+1.5))){
+                player.setTile_x(player.getTile_x()-0.2f);
+                scene.setCamera_x(scene.getCamera_x()+32*0.1f);
+            }
+        }
+        else if(input.isKeyDown(Input.KEY_RIGHT)||input.isKeyDown(Input.KEY_D)){
             player.setDirection(Direction.RIGHT);
             player.getSprite().update(delta);
-            player.setTile_x(player.getTile_x()+1);
-            scene.setCamera_x(scene.getCamera_x()-32*0.1f);
+            if(!scene.isBlocked((int)(player.getTile_x()+0.2+1.5), (int)(player.getTile_y()+1.5))){
+                player.setTile_x(player.getTile_x()+0.2f);
+                scene.setCamera_x(scene.getCamera_x()-32*0.1f);
+            }
+        }
+        if(input.isKeyDown(Input.KEY_0)){
+            player.setTile_x(86);
+            player.setTile_y(60);
+            scene.setCamera_x(-966);
+            scene.setCamera_y(-640);
         }
     }
 
